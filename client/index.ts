@@ -12,5 +12,7 @@ import "./pages/game-instructions";
 import "./pages/game";
 import "./pages/show-results";
 import "./router";
+import "./state";
+import "./rtdb";
 
 (function () {})();

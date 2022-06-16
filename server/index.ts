@@ -3,7 +3,6 @@ import * as path from "path";
 import * as cors from "cors";
 import { firestore, rtdb } from "./db";
 import { nanoid } from "nanoid";
-import { relative } from "path";
 
 // INIT APP AND CFG
 const app = express();
@@ -258,9 +257,6 @@ app.put("/rooms/:id/player/move", (req, res) => {
 const relativeRoute = path.resolve(__dirname, "../dist");
 
 app.use(express.static(relativeRoute));
-app.get("*", (req, res) => {
-  res.sendFile(relativeRoute + "/index.html");
-});
 
 app.listen(port, () => {
   console.log(`listen the port: ${port}`);
