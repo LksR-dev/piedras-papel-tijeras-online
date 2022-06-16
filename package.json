@@ -9,7 +9,7 @@
     "process": "^0.11.10"
   },
   "scripts": {
-    "dev": "cross-env nodemon --watch './server/index.ts' --exec 'ts-node ./server/index.ts'",
+    "dev": "nodemon --watch './server/index.ts' --exec 'ts-node ./server/index.ts'",
     "dev:front": "parcel serve ./client/index.html",
     "build:front": "parcel build ./client/index.html",
     "build:api": "tsc ./server/index.ts",
