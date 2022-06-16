@@ -122,7 +122,7 @@ const state = {
     const userId = cs.userId;
     const name = cs.name;
     if (cs.userId) {
-      fetch(`${API_BASE_URL}/rooms`, {
+      fetch(`${API_BASE_URL}/rooms/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
