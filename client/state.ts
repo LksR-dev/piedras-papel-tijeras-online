@@ -1,6 +1,6 @@
 import { rtdb } from "./rtdb";
 
-const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com";
+const API_BASE_URL = "";
 
 const state = {
   data: {
@@ -95,7 +95,7 @@ const state = {
           return data.json();
         })
         .then(res => {
-          cs.userId = res.id;
+          cs.userId = res.id.toString();
           this.setState(cs);
 
           if (idRoomInput) {
@@ -133,11 +133,11 @@ const state = {
           return data.json();
         })
         .then(res => {
-          if (cs.roomId == null) {
-            cs.roomId = res.id;
-            this.setState(cs);
-            this.connectToRoom(callback);
-          }
+          cs.roomId = res.id.toString();
+          console.log(cs.roomId);
+
+          this.setState(cs);
+          this.connectToRoom(callback);
         });
     }
   },
@@ -190,6 +190,7 @@ const state = {
   // ESCUCHANDO LOS CAMBIOS
   connectToRoom(callback?) {
     const cs = this.getState();
+    console.log(cs.roomId);
     if (cs.roomId && cs.userId) {
       fetch(`${API_BASE_URL}/rooms/${cs.roomId}?userId=${cs.userId}`)
         .then(data => {
