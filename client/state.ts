@@ -119,13 +119,15 @@ const state = {
   },
   createRoom(callback?) {
     const cs = this.getState();
+    const userId = cs.userId;
+    const name = cs.name;
     if (cs.userId) {
       fetch(`${API_BASE_URL}/rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: cs.userId, userName: cs.name }),
+        body: JSON.stringify({ userId: userId, userName: name }),
       })
         .then(data => {
           return data.json();

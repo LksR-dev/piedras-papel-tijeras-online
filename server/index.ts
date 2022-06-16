@@ -90,54 +90,54 @@ app.put("/rooms/player2", (req, res) => {
 // Y DENTRO DE ESE DOCUMENTO GUARDAMOS: EL ID LARGO DE LA RTDB
 // ESTO NOS VA A SERVIR PARA QUE LUEGO DESDE FIRESTORE AL OBTENER EL RTDBID QUE HAY DENTRO DE n SALA
 // CON ESE RTDBID OBTENDREMOS EL PROPIETARIO DE LA SALA EN LA RTDB, ES DECIR, EL USERID DE LA USERSCOLL EN FIRESTORE
-// app.post("/rooms", (req, res) => {
-//   const { userId, userName } = req.body;
+app.post("/rooms", (req, res) => {
+  const { userId, userName } = req.body;
 
-//   userColl
-//     .doc(userId.toString())
-//     .get()
-//     .then(doc => {
-//       if (doc.exists) {
-//         const roomRef = rtdb.ref("/rooms/" + nanoid());
-//         roomRef
-//           .set({
-//             player1: {
-//               userName,
-//               moveChoise: "none",
-//               start: false,
-//               online: true,
-//             },
-//             player2: {
-//               userName: false,
-//               moveChoise: "none",
-//               start: false,
-//               online: false,
-//             },
-//           })
-//           .then(() => {
-//             const roomLongId = roomRef.key;
-//             const roomId = 1000 + Math.floor(Math.random() * 999);
-//             roomsColl
-//               .doc(roomId.toString())
-//               .set({
-//                 rtdbId: roomLongId,
-//                 player1: userName,
-//                 scorePlayer1: 0,
-//                 scorePlayer2: 0,
-//               })
-//               .then(() => {
-//                 res.status(200).json({
-//                   id: roomId,
-//                 });
-//               });
-//           });
-//       } else {
-//         res.status(401).json({
-//           message: "El usuario no existe.",
-//         });
-//       }
-//     });
-// });
+  userColl
+    .doc(userId.toString())
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        const roomRef = rtdb.ref("/rooms/" + nanoid());
+        roomRef
+          .set({
+            player1: {
+              userName,
+              moveChoise: "none",
+              start: false,
+              online: true,
+            },
+            player2: {
+              userName: false,
+              moveChoise: "none",
+              start: false,
+              online: false,
+            },
+          })
+          .then(() => {
+            const roomLongId = roomRef.key;
+            const roomId = 1000 + Math.floor(Math.random() * 999);
+            roomsColl
+              .doc(roomId.toString())
+              .set({
+                rtdbId: roomLongId,
+                player1: userName,
+                scorePlayer1: 0,
+                scorePlayer2: 0,
+              })
+              .then(() => {
+                res.status(200).json({
+                  id: roomId,
+                });
+              });
+          });
+      } else {
+        res.status(401).json({
+          message: "El usuario no existe.",
+        });
+      }
+    });
+});
 app.put("/rooms/score", (req, res) => {
   const { id, player1, player2 } = req.body;
 
