@@ -66,23 +66,23 @@ app.post("/auth/rooms", (req, res) => {
       }
     });
 });
-// app.put("/rooms/player2", (req, res) => {
-//   const { id, player2 } = req.body;
+app.put("/rooms/player2", (req, res) => {
+  const { id, player2 } = req.body;
 
-//   roomsColl
-//     .doc(id.toString())
-//     .update("player2", player2)
-//     .then(doc => {
-//       if (doc.writeTime) {
-//         res.status(200).json({
-//           id: id,
-//           message: `El nombre ${player2} se ha escrito correctamente`,
-//         });
-//       } else {
-//         return `Ha ocurrido un error al actualizar el nombre.`;
-//       }
-//     });
-// });
+  roomsColl
+    .doc(id.toString())
+    .update("player2", player2)
+    .then(doc => {
+      if (doc.writeTime) {
+        res.status(200).json({
+          id: id,
+          message: `El nombre ${player2} se ha escrito correctamente`,
+        });
+      } else {
+        return `Ha ocurrido un error al actualizar el nombre.`;
+      }
+    });
+});
 
 // CREATE ROOM
 // SETEAMOS COMO PROPIETARIO DE LA SALA EN LA RTDB: EL ID DEL USUARIO
@@ -90,74 +90,74 @@ app.post("/auth/rooms", (req, res) => {
 // Y DENTRO DE ESE DOCUMENTO GUARDAMOS: EL ID LARGO DE LA RTDB
 // ESTO NOS VA A SERVIR PARA QUE LUEGO DESDE FIRESTORE AL OBTENER EL RTDBID QUE HAY DENTRO DE n SALA
 // CON ESE RTDBID OBTENDREMOS EL PROPIETARIO DE LA SALA EN LA RTDB, ES DECIR, EL USERID DE LA USERSCOLL EN FIRESTORE
-app.post("/rooms", (req, res) => {
-  const { userId, userName } = req.body;
+// app.post("/rooms", (req, res) => {
+//   const { userId, userName } = req.body;
 
-  userColl
-    .doc(userId.toString())
-    .get()
-    .then(doc => {
-      if (doc.exists) {
-        const roomRef = rtdb.ref("/rooms/" + nanoid());
-        roomRef
-          .set({
-            player1: {
-              userName,
-              moveChoise: "none",
-              start: false,
-              online: true,
-            },
-            player2: {
-              userName: false,
-              moveChoise: "none",
-              start: false,
-              online: false,
-            },
-          })
-          .then(() => {
-            const roomLongId = roomRef.key;
-            const roomId = 1000 + Math.floor(Math.random() * 999);
-            roomsColl
-              .doc(roomId.toString())
-              .set({
-                rtdbId: roomLongId,
-                player1: userName,
-                scorePlayer1: 0,
-                scorePlayer2: 0,
-              })
-              .then(() => {
-                res.status(200).json({
-                  id: roomId,
-                });
-              });
-          });
-      } else {
-        res.status(401).json({
-          message: "El usuario no existe.",
-        });
-      }
-    });
-});
-// app.put("/rooms/score", (req, res) => {
-//   const { id, player1, player2 } = req.body;
-
-//   roomsColl
-//     .doc(id.toString())
-//     .update({
-//       scorePlayer1: player1,
-//       scorePlayer2: player2,
-//     })
+//   userColl
+//     .doc(userId.toString())
+//     .get()
 //     .then(doc => {
-//       if (doc.writeTime) {
-//         res.status(200).json({
-//           id: id,
-//           message: `La puntuacion se actualizo correctamente.`,
-//         });
+//       if (doc.exists) {
+//         const roomRef = rtdb.ref("/rooms/" + nanoid());
+//         roomRef
+//           .set({
+//             player1: {
+//               userName,
+//               moveChoise: "none",
+//               start: false,
+//               online: true,
+//             },
+//             player2: {
+//               userName: false,
+//               moveChoise: "none",
+//               start: false,
+//               online: false,
+//             },
+//           })
+//           .then(() => {
+//             const roomLongId = roomRef.key;
+//             const roomId = 1000 + Math.floor(Math.random() * 999);
+//             roomsColl
+//               .doc(roomId.toString())
+//               .set({
+//                 rtdbId: roomLongId,
+//                 player1: userName,
+//                 scorePlayer1: 0,
+//                 scorePlayer2: 0,
+//               })
+//               .then(() => {
+//                 res.status(200).json({
+//                   id: roomId,
+//                 });
+//               });
+//           });
 //       } else {
-//         return `Hubo un problema en actualizar la puntuacion.`;
+//         res.status(401).json({
+//           message: "El usuario no existe.",
+//         });
 //       }
 //     });
 // });
+app.put("/rooms/score", (req, res) => {
+  const { id, player1, player2 } = req.body;
+
+  roomsColl
+    .doc(id.toString())
+    .update({
+      scorePlayer1: player1,
+      scorePlayer2: player2,
+    })
+    .then(doc => {
+      if (doc.writeTime) {
+        res.status(200).json({
+          id: id,
+          message: `La puntuacion se actualizo correctamente.`,
+        });
+      } else {
+        return `Hubo un problema en actualizar la puntuacion.`;
+      }
+    });
+});
 app.get("/rooms/:roomId", (req, res) => {
   const { roomId } = req.params;
   const { userId } = req.query;
@@ -191,68 +191,68 @@ app.get("/rooms/data/:id", (req, res) => {
 });
 
 // CHANGE THE PLAYER2 NAME AND ONLINE STATUS
-// app.put("/rooms/user/:id", (req, res) => {
-//   const { name } = req.body;
-//   const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/player2`);
-//   chatRoomRef.update(
-//     {
-//       userName: name,
-//       online: true,
-//     },
-//     () => {
-//       res.status(200).json({
-//         message: `Player2 has changed the userName.${name}`,
-//       });
-//     }
-//   );
-// });
-// // CHANGE ONLINE STATUS
-// app.put("/rooms/user/status/:id", (req, res) => {
-//   const { player, onlineStatus } = req.body;
-//   const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
-//   chatRoomRef.update(
-//     {
-//       online: onlineStatus,
-//     },
-//     () => {
-//       res.status(200).json({
-//         message: `${player} has changed the onlineStatus:${onlineStatus}`,
-//       });
-//     }
-//   );
-// });
+app.put("/rooms/user/:id", (req, res) => {
+  const { name } = req.body;
+  const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/player2`);
+  chatRoomRef.update(
+    {
+      userName: name,
+      online: true,
+    },
+    () => {
+      res.status(200).json({
+        message: `Player2 has changed the userName.${name}`,
+      });
+    }
+  );
+});
+// CHANGE ONLINE STATUS
+app.put("/rooms/user/status/:id", (req, res) => {
+  const { player, onlineStatus } = req.body;
+  const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
+  chatRoomRef.update(
+    {
+      online: onlineStatus,
+    },
+    () => {
+      res.status(200).json({
+        message: `${player} has changed the onlineStatus:${onlineStatus}`,
+      });
+    }
+  );
+});
 
-// // CHANGE THE START
-// app.put("/rooms/:id/player/start", (req, res) => {
-//   const { player, start } = req.body;
-//   const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
-//   chatRoomRef.update(
-//     {
-//       start,
-//     },
-//     () => {
-//       res.status(200).json({
-//         message: `${player} is start.`,
-//       });
-//     }
-//   );
-// });
+// CHANGE THE START
+app.put("/rooms/:id/player/start", (req, res) => {
+  const { player, start } = req.body;
+  const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
+  chatRoomRef.update(
+    {
+      start,
+    },
+    () => {
+      res.status(200).json({
+        message: `${player} is start.`,
+      });
+    }
+  );
+});
 
-// // CHANGE THE MOVECHOISE
-// app.put("/rooms/:id/player/move", (req, res) => {
-//   const { player, moveChoise } = req.body;
-//   const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
-//   chatRoomRef.update(
-//     {
-//       moveChoise,
-//     },
-//     () => {
-//       res.status(200).json({
-//         message: `${player} moveChoise: ${moveChoise}.`,
-//       });
-//     }
-//   );
-// });
+// CHANGE THE MOVECHOISE
+app.put("/rooms/:id/player/move", (req, res) => {
+  const { player, moveChoise } = req.body;
+  const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}/${player}`);
+  chatRoomRef.update(
+    {
+      moveChoise,
+    },
+    () => {
+      res.status(200).json({
+        message: `${player} moveChoise: ${moveChoise}.`,
+      });
+    }
+  );
+});
 
 const relativeRoute = path.resolve(__dirname, "../dist");
 
