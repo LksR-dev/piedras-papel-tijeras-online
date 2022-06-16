@@ -122,7 +122,7 @@ const state = {
     const userId = cs.userId;
     const name = cs.name;
     if (cs.userId) {
-      fetch(`${API_BASE_URL}/rooms/`, {
+      fetch(`${API_BASE_URL}/rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,8 +134,6 @@ const state = {
         })
         .then(res => {
           cs.roomId = res.id.toString();
-          console.log(cs.roomId);
-
           this.setState(cs);
           this.connectToRoom(callback);
         });
@@ -190,7 +188,6 @@ const state = {
   // ESCUCHANDO LOS CAMBIOS
   connectToRoom(callback?) {
     const cs = this.getState();
-    console.log(cs.roomId);
     if (cs.roomId && cs.userId) {
       fetch(`${API_BASE_URL}/rooms/${cs.roomId}?userId=${cs.userId}`)
         .then(data => {
