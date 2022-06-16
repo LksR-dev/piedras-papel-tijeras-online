@@ -134,7 +134,7 @@ const state = {
         })
         .then(res => {
           if (cs.roomId == null) {
-            cs.roomId = res.id.toString();
+            cs.roomId = res.id;
             this.setState(cs);
             this.connectToRoom(callback);
           }
