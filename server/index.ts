@@ -98,7 +98,7 @@ app.post("/rooms", (req, res) => {
     .get()
     .then(doc => {
       if (doc.exists) {
-        const roomRef = rtdb.ref("/rooms/" + nanoid());
+        const roomRef = rtdb.ref("rooms/" + nanoid());
         roomRef
           .set({
             player1: {
@@ -258,7 +258,7 @@ const relativeRoute = path.resolve(__dirname, "../dist");
 
 app.use(express.static(relativeRoute));
 app.get("*", (req, res) => {
-  res.sendFile(relativeRoute);
+  res.sendFile(relativeRoute, +"/index.html");
 });
 
 app.listen(port, () => {
