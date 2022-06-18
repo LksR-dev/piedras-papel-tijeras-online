@@ -90,7 +90,7 @@ app.put("/rooms/player2", (req, res) => {
 // Y DENTRO DE ESE DOCUMENTO GUARDAMOS: EL ID LARGO DE LA RTDB
 // ESTO NOS VA A SERVIR PARA QUE LUEGO DESDE FIRESTORE AL OBTENER EL RTDBID QUE HAY DENTRO DE n SALA
 // CON ESE RTDBID OBTENDREMOS EL PROPIETARIO DE LA SALA EN LA RTDB, ES DECIR, EL USERID DE LA USERSCOLL EN FIRESTORE
-app.post("/rooms", (req, res) => {
+app.post("/createRoom", (req, res) => {
   const { userName } = req.body;
 
   const roomRef = rtdb.ref("/rooms/" + nanoid());
