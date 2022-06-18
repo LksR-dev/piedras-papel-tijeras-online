@@ -98,11 +98,11 @@ app.post("/rooms", (req, res) => {
     .get()
     .then(doc => {
       if (doc.exists) {
-        const roomRef = rtdb.ref("rooms/" + nanoid());
+        const roomRef = rtdb.ref("/rooms/" + nanoid());
         roomRef
           .set({
             player1: {
-              userName,
+              userName: userName,
               moveChoise: "none",
               start: false,
               online: true,
