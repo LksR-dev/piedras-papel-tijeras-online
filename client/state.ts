@@ -121,7 +121,7 @@ const state = {
     const cs = this.getState();
     const name = cs.name;
     if (cs.userId) {
-      fetch(`${API_BASE_URL}/createRoom`, {
+      fetch(`${API_BASE_URL}/rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
