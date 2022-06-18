@@ -83,13 +83,14 @@ const state = {
   // Y CREAR UNA ROOM EN FIRESTORE GUARDANDO EL RTDBID
   createUser(callback?, idRoomInput?) {
     const cs = this.getState();
+    const name = cs.name;
     if (cs.name) {
       fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: cs.name }),
+        body: JSON.stringify({ name: name }),
       })
         .then(data => {
           return data.json();
