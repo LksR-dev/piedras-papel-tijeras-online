@@ -1,6 +1,6 @@
 import { rtdb } from "./rtdb";
 
-const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com/";
+const API_BASE_URL = "http://localhost:3000";
 
 const state = {
   data: {
@@ -84,7 +84,7 @@ const state = {
   createUser(callback?, idRoomInput?) {
     const cs = this.getState();
     if (cs.name) {
-      fetch(`${API_BASE_URL}signup`, {
+      fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,15 +119,14 @@ const state = {
   },
   createRoom(callback?) {
     const cs = this.getState();
-    const userId = cs.userId;
     const name = cs.name;
     if (cs.userId) {
-      fetch(`${API_BASE_URL}rooms`, {
+      fetch(`${API_BASE_URL}/rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: userId, userName: name }),
+        body: JSON.stringify({ userName: name }),
       })
         .then(data => {
           return data.json();
@@ -142,7 +141,7 @@ const state = {
   authRoomId(roomIdInput) {
     const cs = this.getState();
 
-    return fetch(`${API_BASE_URL}auth/rooms`, {
+    return fetch(`${API_BASE_URL}/auth/rooms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -164,7 +163,7 @@ const state = {
   },
   addP2ToRooms(roomIdInput) {
     const cs = this.getState();
-    return fetch(`${API_BASE_URL}rooms/player2`, {
+    return fetch(`${API_BASE_URL}/rooms/player2`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -189,7 +188,7 @@ const state = {
   connectToRoom(callback?) {
     const cs = this.getState();
     if (cs.roomId && cs.userId) {
-      fetch(`${API_BASE_URL}rooms/${cs.roomId}?userId=${cs.userId}`)
+      fetch(`${API_BASE_URL}/rooms/${cs.roomId}?userId=${cs.userId}`)
         .then(data => {
           return data.json();
         })
@@ -221,7 +220,7 @@ const state = {
     const cs = this.getState();
     const name = cs.name;
     if (cs.name) {
-      fetch(`${API_BASE_URL}rooms/user/${cs.rtdbRoomId}`, {
+      fetch(`${API_BASE_URL}/rooms/user/${cs.rtdbRoomId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -241,7 +240,7 @@ const state = {
     const cs = this.getState();
     const player = this.checkPlayer();
     if (cs.name) {
-      fetch(`${API_BASE_URL}rooms/user/status/${cs.rtdbRoomId}`, {
+      fetch(`${API_BASE_URL}/rooms/user/status/${cs.rtdbRoomId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -262,7 +261,7 @@ const state = {
     const cs = this.getState();
     const player = this.checkPlayer();
 
-    fetch(`${API_BASE_URL}rooms/${cs.rtdbRoomId}/player/start`, {
+    fetch(`${API_BASE_URL}/rooms/${cs.rtdbRoomId}/player/start`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -279,7 +278,7 @@ const state = {
     const cs = this.getState();
     const player = this.checkPlayer();
 
-    fetch(`${API_BASE_URL}rooms/${cs.rtdbRoomId}/player/move`, {
+    fetch(`${API_BASE_URL}/rooms/${cs.rtdbRoomId}/player/move`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -335,7 +334,7 @@ const state = {
     // let scoreP1 = cs.history.player1;
     // let scoreP2 = cs.history.player2;
 
-    fetch(`${API_BASE_URL}rooms/score`, {
+    fetch(`${API_BASE_URL}/rooms/score`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -354,7 +353,7 @@ const state = {
     const cs = this.getState();
     const history = cs.history;
     if (cs.roomId && cs.userId) {
-      fetch(`${API_BASE_URL}rooms/${cs.roomId}?userId=${cs.userId}`)
+      fetch(`${API_BASE_URL}/rooms/${cs.roomId}?userId=${cs.userId}`)
         .then(data => {
           return data.json();
         })
