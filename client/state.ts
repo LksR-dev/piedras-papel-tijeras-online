@@ -1,6 +1,6 @@
 import { rtdb } from "./rtdb";
 
-const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com";
+const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com/";
 
 const state = {
   data: {
@@ -119,6 +119,7 @@ const state = {
   },
   createRoom(callback?) {
     const cs = this.getState();
+    const userId = cs.userId;
     const name = cs.name;
     if (cs.userId) {
       fetch(`${API_BASE_URL}/rooms`, {
@@ -126,7 +127,7 @@ const state = {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userName: name }),
+        body: JSON.stringify({ userId: userId, userName: name }),
       })
         .then(data => {
           return data.json();
