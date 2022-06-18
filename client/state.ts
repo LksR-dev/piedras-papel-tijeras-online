@@ -141,7 +141,7 @@ const state = {
   authRoomId(roomIdInput) {
     const cs = this.getState();
 
-    return fetch(`${API_BASE_URL}/auth/rooms`, {
+    fetch(`${API_BASE_URL}/auth/rooms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +163,7 @@ const state = {
   },
   addP2ToRooms(roomIdInput) {
     const cs = this.getState();
-    return fetch(`${API_BASE_URL}/rooms/player2`, {
+    fetch(`${API_BASE_URL}/rooms/player2`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
