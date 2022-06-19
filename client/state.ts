@@ -172,7 +172,6 @@ const state = {
       })
       .then(res => {
         if (res.id) {
-          console.log(res.message);
           return res.message;
         } else {
           alert(res.message);
@@ -206,8 +205,6 @@ const state = {
         const onlinePlayer1 = res.player1.online;
         const namePlayer1 = res.player1.userName;
         const onlinePlayer2 = res.player2.online;
-        const namePlayer2 = res.player2.userName;
-        console.log(onlinePlayer1, onlinePlayer2);
 
         if (onlinePlayer1 && onlinePlayer2) {
           alert(
@@ -218,11 +215,8 @@ const state = {
           onlinePlayer2 == false &&
           namePlayer1 == cs.name
         ) {
-          console.log("entra al primer else if");
-
           this.listenRoom(callback);
         } else if (onlinePlayer1 == true && onlinePlayer2 == false) {
-          console.log("entra al segundo else if");
           this.changeNamePlayer2();
           this.addP2ToRooms();
           this.listenRoom(callback);
@@ -238,7 +232,6 @@ const state = {
       const value = snapshot.val();
       currentState.rtdbData = value;
       this.setState(currentState);
-      console.log(value);
     });
     if (callback) callback();
   },
