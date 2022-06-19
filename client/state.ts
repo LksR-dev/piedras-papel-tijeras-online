@@ -1,7 +1,7 @@
 import { rtdb } from "./rtdb";
 
-const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com";
-// const API_BASE_URL = "http://localhost:3000";
+// const API_BASE_URL = "https://piedra-papel-tijeras-online-df.herokuapp.com";
+const API_BASE_URL = "http://localhost:3000";
 
 const state = {
   data: {
@@ -150,17 +150,16 @@ const state = {
       .then(res => {
         if (res.id) {
           cs.roomId = res.id;
-          this.addP2ToRooms(cs.roomId);
-          this.connectToRoom();
-          callback();
-          return res;
+          this.setState(cs);
+          this.connectToRoom(callback);
         } else {
-          return res.message;
+          alert(res.message);
         }
       });
   },
-  addP2ToRooms(roomIdInput) {
+  addP2ToRooms() {
     const cs = this.getState();
+    const roomIdInput = cs.roomId;
     fetch(`${API_BASE_URL}/rooms/player2`, {
       method: "PUT",
       headers: {
@@ -173,10 +172,10 @@ const state = {
       })
       .then(res => {
         if (res.id) {
+          console.log(res.message);
           return res.message;
         } else {
           alert(res.message);
-          return res.message;
         }
       });
   },
@@ -193,9 +192,42 @@ const state = {
         .then(res => {
           cs.rtdbRoomId = res.rtdbId;
           this.setState(cs);
-          this.listenRoom(callback);
+          this.checkStatusOnline(callback);
         });
     }
+  },
+  checkStatusOnline(callback?) {
+    const cs = this.getState();
+    fetch(`${API_BASE_URL}/rooms/status/${cs.rtdbRoomId}`)
+      .then(data => {
+        return data.json();
+      })
+      .then(res => {
+        const onlinePlayer1 = res.player1.online;
+        const namePlayer1 = res.player1.userName;
+        const onlinePlayer2 = res.player2.online;
+        const namePlayer2 = res.player2.userName;
+        console.log(onlinePlayer1, onlinePlayer2);
+
+        if (onlinePlayer1 && onlinePlayer2) {
+          alert(
+            "Ya hay dos jugadores conectados a la sala que deseas ingresar."
+          );
+        } else if (
+          onlinePlayer1 == true &&
+          onlinePlayer2 == false &&
+          namePlayer1 == cs.name
+        ) {
+          console.log("entra al primer else if");
+
+          this.listenRoom(callback);
+        } else if (onlinePlayer1 == true && onlinePlayer2 == false) {
+          console.log("entra al segundo else if");
+          this.changeNamePlayer2();
+          this.addP2ToRooms();
+          this.listenRoom(callback);
+        }
+      });
   },
   listenRoom(callback?) {
     const cs = this.getState();
@@ -206,6 +238,7 @@ const state = {
       const value = snapshot.val();
       currentState.rtdbData = value;
       this.setState(currentState);
+      console.log(value);
     });
     if (callback) callback();
   },
@@ -217,7 +250,7 @@ const state = {
   changeNamePlayer2(callback?) {
     const cs = this.getState();
     const name = cs.name;
-    if (cs.name) {
+    if (name) {
       fetch(`${API_BASE_URL}/rooms/user/${cs.rtdbRoomId}`, {
         method: "PUT",
         headers: {

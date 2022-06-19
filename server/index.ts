@@ -183,6 +183,12 @@ app.get("/rooms/data/:id", (req, res) => {
     res.status(200).json(snap.val());
   });
 });
+app.get("/rooms/status/:id", (req, res) => {
+  const chatRoomRef = rtdb.ref(`/rooms/${req.params.id}`);
+  chatRoomRef.once("value", snap => {
+    res.status(200).json(snap.val());
+  });
+});
 
 // CHANGE THE PLAYER2 NAME AND ONLINE STATUS
 app.put("/rooms/user/:id", (req, res) => {

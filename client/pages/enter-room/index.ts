@@ -44,8 +44,9 @@ class EnterRoom extends HTMLElement {
         .shadowRoot.querySelector("input").value;
 
       if (inputId != "") {
-        state.createUser(() => {}, inputId);
-        Router.go("/instructions");
+        state.createUser(() => {
+          Router.go("/instructions");
+        }, inputId);
       } else {
         alert("Debes ingresar un ID.");
       }
@@ -53,12 +54,6 @@ class EnterRoom extends HTMLElement {
   }
 
   connectedCallback() {
-    const cs = state.getState();
-    state.suscribe(() => {
-      if (cs.rtdbRoomId) {
-        state.changeNamePlayer2();
-      }
-    });
     this.render();
   }
   render() {
