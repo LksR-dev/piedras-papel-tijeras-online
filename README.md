@@ -1,4 +1,4 @@
-#Piedra, papel o tijeras online
+# Piedra, papel o tijeras online
 
 En este proyecto recree el clásico juego de "Piedra, papel o tijeras", en el que la persona juega contra otra
 simultaneamente. A este proyecto lo realicé cómo una SPA, para llevarlo a cabo utilicé web components, router,
