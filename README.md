@@ -6,4 +6,4 @@ state. Las tecnologías empleadas en este proyecto fueron Typescript, Express, N
 
 API Postman: https://documenter.getpostman.com/view/20077470/UzBiR9fk
 
-APP: https://piedra-papel-tijeras-online-df.herokuapp.com/
+APP: https://piedra-papel-tijeras-online.onrender.com/
